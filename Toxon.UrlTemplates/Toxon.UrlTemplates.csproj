@@ -36,11 +36,19 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="LiteralComponent.cs" />
+    <Compile Include="Parser.cs" />
+    <Compile Include="ParserError.cs" />
+    <Compile Include="ParserResult.cs" />
+    <Compile Include="ParserState.cs" />
+    <Compile Include="ParserUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UrlTemplate.cs" />
+    <Compile Include="UrlTemplateComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="paket.references" />
