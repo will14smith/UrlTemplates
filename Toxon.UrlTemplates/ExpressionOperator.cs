@@ -2,14 +2,21 @@
 {
     internal class ExpressionOperator
     {
+        public string Operator { get; }
+
         public ExpressionOperator(char opChar)
         {
-            throw new System.NotImplementedException();
+            Operator = opChar.ToString();
         }
 
         public ExpressionOperator()
         {
-            throw new System.NotImplementedException();
+            Operator = "";
+        }
+
+        public override string ToString()
+        {
+            return Operator;
         }
     }
 }

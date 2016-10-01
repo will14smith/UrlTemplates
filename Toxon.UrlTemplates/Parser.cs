@@ -104,7 +104,7 @@ namespace Toxon.UrlTemplates
                 Optional(ParseOperator),
                 ParseVariableList,
                 ReadOneOf('}'),
-                (unused1, op, vars, unused2) => (UrlTemplateComponent)new ExpressionComponent(op, vars)
+                (unused1, op, vars, unused2) => (UrlTemplateComponent)new ExpressionComponent(op.OrElse(() => new ExpressionOperator()), vars)
             )(initialState);
         }
 
@@ -113,7 +113,10 @@ namespace Toxon.UrlTemplates
             // varchar = ALPHA / DIGIT / "_" / pct-encoded
             var varchar = Alternative(Bind(ReadWhere(c => ParserUtils.IsAlpha(c) || ParserUtils.IsDigit(c) || c == '_'), x => x.ToString()), ParsePercentEncoded);
             // varname = varchar *( ["."] varchar )
-            var varname = Sequence(varchar, Many(Sequence(Optional(ReadOneOf('.')), varchar, (c1, c2) => $"{c1}{c2}")), (c, s) => $"{c}{s}");
+            var varname = Sequence(varchar, Many(Sequence(Optional(ReadOneOf('.')), varchar, (c1, c2) => c1.Map(c => $"{c}{c2}", () => $"{c2}"))), (c, s) =>
+            {
+                return $"{c}{string.Join("", s)}";
+            });
             // varspec = varname [ modifier-level4 ]
             var varspec = Sequence(varname, Optional(ParseModifierLevel4), (v, mod) => new ExpressionVariable(v, mod));
             // variable-list = varspec *( "," varspec )
@@ -250,10 +253,9 @@ namespace Toxon.UrlTemplates
             };
         }
 
-        private ParseFn<TResult> Optional<TResult>(ParseFn<TResult> parser)
+        private ParseFn<Option<TResult>> Optional<TResult>(ParseFn<TResult> parser)
         {
-            // TODO should really be Option<TResult> return
-            return state => parser(state).Map(x => x, x => x.State.Success(default(TResult)));
+            return state => parser(state).Map(x => x.State.Success(Option.Some(x.Result)), x => state.Success(Option.None<TResult>()));
         }
 
         public ParseFn<TResult> Alternative<TResult>(params ParseFn<TResult>[] parsers)

@@ -19,6 +19,11 @@ namespace Toxon.UrlTemplates
         }
         public string ResolveToString(IParameterResolver parameterResolver, bool allowPartial)
         {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
             return string.Join("", _components.Select(x => x.ToString()));
         }
     }

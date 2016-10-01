@@ -13,5 +13,10 @@ namespace Toxon.UrlTemplates
             Operator = op;
             Variables = variables;
         }
+
+        public override string ToString()
+        {
+            return "{" + Operator + string.Join(",", Variables) + "}";
+        }
     }
 }

@@ -41,7 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParserTests.cs" />
-    <Compile Include="ParserTests.SimpleExpressions.cs" />
+    <Compile Include="ParserTests.Level4Expressions.cs" />
+    <Compile Include="ParserTests.Level3Expressions.cs" />
+    <Compile Include="ParserTests.Level2Expressions.cs" />
+    <Compile Include="ParserTests.Level1Expressions.cs" />
     <Compile Include="ParserTests.Literals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
