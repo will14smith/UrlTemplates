@@ -1,14 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Toxon.UrlTemplates.UnitTests
 {
     public partial class ParserTests
     {
+        [Test]
+        public void CanParseAllSamples()
+        {
+            var data = SampleData.Load(TestContext.CurrentContext.TestDirectory + "/uritemplate-test/spec-examples.json");
+            foreach (var ctx in data.Data)
+                foreach (var testCase in ctx.Value.TestCases)
+                    AssertOnSuccess(Parse(testCase.First.ToString()), x => { });
+
+            data = SampleData.Load(TestContext.CurrentContext.TestDirectory + "/uritemplate-test/extended-tests.json");
+            foreach (var ctx in data.Data)
+                foreach (var testCase in ctx.Value.TestCases)
+                    AssertOnSuccess(Parse(testCase.First.ToString()), x => { });
+
+            //TODO add negative-tests.json
+        }
+
         private ParserResult<UrlTemplate> Parse(string input)
         {
             return new Parser(input).Parse();

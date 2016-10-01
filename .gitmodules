@@ -1,0 +1,4 @@
+[submodule "Toxon.UrlTemplates.UnitTests/uritemplate-test"]
+	path = Toxon.UrlTemplates.UnitTests/uritemplate-test
+	url = https://github.com/uri-templates/uritemplate-test
+	branch = master

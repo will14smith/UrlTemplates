@@ -31,3 +31,5 @@ _ReSharper*/
 # paket
 !.paket/paket.bootstrapper.exe
 packages/
+
+.vs/
