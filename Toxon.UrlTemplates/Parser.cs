@@ -110,12 +110,31 @@ namespace Toxon.UrlTemplates
 
         private ParserResult<IReadOnlyList<ExpressionVariable>> ParseVariableList(ParserState state)
         {
-            // variable-list =  varspec *( "," varspec )
-            // varspec       =  varname [ modifier-level4 ]
-            // varname       =  varchar *( ["."] varchar )
-            // varchar       =  ALPHA / DIGIT / "_" / pct-encoded
+            // varchar = ALPHA / DIGIT / "_" / pct-encoded
+            var varchar = Alternative(Bind(ReadWhere(c => ParserUtils.IsAlpha(c) || ParserUtils.IsDigit(c) || c == '_'), x => x.ToString()), ParsePercentEncoded);
+            // varname = varchar *( ["."] varchar )
+            var varname = Sequence(varchar, Many(Sequence(Optional(ReadOneOf('.')), varchar, (c1, c2) => $"{c1}{c2}")), (c, s) => $"{c}{s}");
+            // varspec = varname [ modifier-level4 ]
+            var varspec = Sequence(varname, Optional(ParseModifierLevel4), (v, mod) => new ExpressionVariable(v, mod));
+            // variable-list = varspec *( "," varspec )
+            var variableList = Sequence(varspec, Many(Sequence(ReadOneOf(','), varspec, (_, v) => v)), (v, vs) => new[] { v }.Concat(vs));
 
-            throw new NotImplementedException();
+            return Bind(variableList, x => (IReadOnlyList<ExpressionVariable>)x.ToList())(state);
+        }
+
+        private ParserResult<ExpressionVariableModifier> ParseModifierLevel4(ParserState state)
+        {
+            // explode = "*"
+            var explode = Bind(ReadOneOf('*'), x => (ExpressionVariableModifier)new ExpressionVariableModifier.Explode());
+
+            // max-length = %x31-39 0*3DIGIT ; positive integer < 10000
+            var maxLength = Sequence(ReadWhere(x => x >= 0x31 && x <= 0x39), Repeat(ReadWhere(ParserUtils.IsDigit), 0, 3), (fd, ds) => ds.Aggregate(fd - 0x30, (current, d) => current * 10 + d - 0x30));
+
+            // prefix = ":" max-length
+            var prefix = Sequence(ReadOneOf(':'), maxLength, (_, length) => (ExpressionVariableModifier)new ExpressionVariableModifier.Prefix(length));
+
+            // modifier-level4 = prefix / explode
+            return Alternative(prefix, explode)(state);
         }
 
         private ParserResult<ExpressionOperator> ParseOperator(ParserState initialState)
@@ -192,6 +211,44 @@ namespace Toxon.UrlTemplates
         #endregion
 
         #region helpers
+
+        private ParseFn<TOut> Bind<TIn, TOut>(ParseFn<TIn> parser, Func<TIn, TOut> fn)
+        {
+            return state => parser(state).Map(x => x.State.Success(fn(x.Result)));
+        }
+
+        private ParseFn<IReadOnlyList<TResult>> Many<TResult>(ParseFn<TResult> parser)
+        {
+            return Repeat(parser, 0, int.MaxValue);
+        }
+
+        private ParseFn<IReadOnlyList<TResult>> Repeat<TResult>(ParseFn<TResult> parser, int min, int max)
+        {
+            return state =>
+            {
+                var results = new List<TResult>();
+
+                var result = parser(state);
+                while (result.IsSuccess && max > 0)
+                {
+                    result.Match(x => results.Add(x.Result), x => { });
+
+                    // TODO check state has changed?
+                    state = result.State;
+                    result = parser(state);
+
+                    min--;
+                    max--;
+                }
+
+                if (min > 0)
+                {
+                    return state.Failure<IReadOnlyList<TResult>>("Didn't match enough times, need {0} more", min);
+                }
+
+                return state.Success<IReadOnlyList<TResult>>(results);
+            };
+        }
 
         private ParseFn<TResult> Optional<TResult>(ParseFn<TResult> parser)
         {
