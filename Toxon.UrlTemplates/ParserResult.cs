@@ -77,6 +77,11 @@ namespace Toxon.UrlTemplates
             {
                 return failureFunc(this);
             }
+
+            public ParserResult<T> ToType<T>()
+            {
+                return new ParserResult<T>.Failure(State, Errors);
+            }
         }
     }
 }

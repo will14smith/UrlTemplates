@@ -22,9 +22,18 @@
         {
             return ParserResult.Success(this, result);
         }
+        public ParserResult<T> Failure<T>(string message)
+        {
+            return ParserResult.Failure<T>(this, new[] { new ParserError(message, this) });
+        }
         public ParserResult<T> Failure<T>(string message, params object[] args)
         {
             return ParserResult.Failure<T>(this, new[] { new ParserError(string.Format(message, args), this) });
+        }
+
+        public override string ToString()
+        {
+            return "idx:" + Position;
         }
     }
 }

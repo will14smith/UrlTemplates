@@ -10,5 +10,10 @@
             Message = message;
             State = state;
         }
+
+        public override string ToString()
+        {
+            return Message + "\n\tat " + State;
+        }
     }
 }
