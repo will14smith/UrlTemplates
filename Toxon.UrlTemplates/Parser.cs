@@ -96,11 +96,42 @@ namespace Toxon.UrlTemplates
             )(initialState);
         }
 
+        private ParserResult<UrlTemplateComponent> ParseExpression(ParserState initialState)
+        {
+            // expression = "{" [ operator ] variable-list "}"
+            return Sequence(
+                ReadOneOf('{'),
+                Optional(ParseOperator),
+                ParseVariableList,
+                ReadOneOf('}'),
+                (unused1, op, vars, unused2) => (UrlTemplateComponent)new ExpressionComponent(op, vars)
+            )(initialState);
         }
 
-        private ParserResult<UrlTemplateComponent> ParseExpression(ParserState s)
+        private ParserResult<IReadOnlyList<ExpressionVariable>> ParseVariableList(ParserState state)
         {
+            // variable-list =  varspec *( "," varspec )
+            // varspec       =  varname [ modifier-level4 ]
+            // varname       =  varchar *( ["."] varchar )
+            // varchar       =  ALPHA / DIGIT / "_" / pct-encoded
+
             throw new NotImplementedException();
+        }
+
+        private ParserResult<ExpressionOperator> ParseOperator(ParserState initialState)
+        {
+            // operator = op-level2 / op-level3 / op-reserve
+            // op-level2 = "+" / "#"
+            // op-level3 = "." / "/" / ";" / "?" / "&"
+            // op-reserve = "=" / "," / "!" / "@" / "|"
+
+            var op2 = ReadOneOf('+', '#');
+            var op3 = ReadOneOf('.', '/', ';', '?', '&');
+            var opReserve = ReadOneOf('=', ',', '!', '@', '|');
+
+            var op = Alternative(op2, op3, opReserve);
+
+            return op(initialState).Map(x => x.State.Success(new ExpressionOperator(x.Result)));
         }
 
         #region state helpers

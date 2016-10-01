@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="ExpressionComponent.cs" />
+    <Compile Include="ExpressionOperator.cs" />
+    <Compile Include="ExpressionVariable.cs" />
     <Compile Include="LiteralComponent.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParserError.cs" />

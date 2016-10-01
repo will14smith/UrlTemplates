@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParserTests.cs" />
+    <Compile Include="ParserTests.SimpleExpressions.cs" />
     <Compile Include="ParserTests.Literals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
