@@ -78,5 +78,21 @@ namespace Toxon.UrlTemplates.UnitTests
                 //TODO check error
             });
         }
+
+        [Test]
+        public void EncodingSpecialChars()
+        {
+            var input = "€";
+            var expected = "%E2%82%AC";
+
+            var result = Parse(input);
+
+            AssertOnSuccess(result, x =>
+            {
+                var output = x.ToString();
+
+                Assert.AreEqual(expected, output);
+            });
+        }
     }
 }

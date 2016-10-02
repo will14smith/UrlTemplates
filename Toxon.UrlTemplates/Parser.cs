@@ -74,8 +74,7 @@ namespace Toxon.UrlTemplates
                 || ParserUtils.IsUCSChar(c)
                 || ParserUtils.IsIPrivate(c))
                 {
-                    // TODO escape NON-(reserved / unreserved / pct-encoded)
-                    return read.State.Success<UrlTemplateComponent>(new LiteralComponent(new string(new[] { c })));
+                    return read.State.Success<UrlTemplateComponent>(new LiteralComponent(ParserUtils.Escape(c)));
                 }
 
                 // OR pct-encoded

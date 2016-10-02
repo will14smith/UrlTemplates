@@ -1,4 +1,8 @@
-﻿namespace Toxon.UrlTemplates
+﻿using System;
+using System.Linq;
+using System.Text;
+
+namespace Toxon.UrlTemplates
 {
     internal class ParserUtils
     {
@@ -72,6 +76,36 @@
             return (c >= 0xE000 && c <= 0xF8FF)
                    || (c >= 0xF0000 && c <= 0xFFFFD)
                    || (c >= 0x100000 && c <= 0x10FFFD);
+        }
+
+        public static string Escape(char input)
+        {
+            if (IsReserved(input) || IsUnreserved(input))
+            {
+                return input.ToString();
+            }
+
+            var bytes = Encoding.UTF8.GetBytes(new[] { input });
+            var result = new StringBuilder();
+
+            foreach (var b in bytes)
+            {
+                result.Append('%');
+                result.Append(BitConverter.ToString(new[] { b }));
+            }
+
+            return result.ToString();
+        }
+        public static string Escape(string input)
+        {
+            var result = new StringBuilder();
+
+            foreach (var c in input)
+            {
+                result.Append(Escape(c));
+            }
+
+            return result.ToString();
         }
     }
 }
