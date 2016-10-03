@@ -1,11 +1,14 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Toxon.UrlTemplates
 {
     internal class ExpressionVariable
     {
         public string Name { get; }
-        public Option<ExpressionVariableModifier> Modifier { get; }
+        public IReadOnlyCollection<ExpressionVariableModifier> Modifier { get; }
 
-        public ExpressionVariable(string name, Option<ExpressionVariableModifier> modifier)
+        public ExpressionVariable(string name, IReadOnlyCollection<ExpressionVariableModifier> modifier)
         {
             Name = name;
             Modifier = modifier;
@@ -13,7 +16,7 @@ namespace Toxon.UrlTemplates
 
         public override string ToString()
         {
-            return Name + Modifier.Map(x => x.ToString(), () => "");
+            return Name + string.Join("", Modifier.Select(x => x.ToString()));
         }
     }
 }

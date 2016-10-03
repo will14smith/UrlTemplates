@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Toxon.UrlTemplates
 {
     internal class ExpressionVariableModifier
@@ -25,6 +27,23 @@ namespace Toxon.UrlTemplates
             {
                 return "*";
             }
+        }
+    }
+
+    internal static class ExpressionVariableModifierExtensions
+    {
+        public static Option<int> GetPrefixLength(this ExpressionVariable variable)
+        {
+            var prefix = variable.Modifier
+                .OfType<ExpressionVariableModifier.Prefix>()
+                .FirstOrDefault();
+
+            if (prefix == null)
+            {
+                return Option.None<int>();
+            }
+
+            return Option.Some(prefix.Length);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Toxon.UrlTemplates
                 || ParserUtils.IsUCSChar(c)
                 || ParserUtils.IsIPrivate(c))
                 {
-                    return read.State.Success<UrlTemplateComponent>(new LiteralComponent(ParserUtils.Escape(c)));
+                    return read.State.Success<UrlTemplateComponent>(new LiteralComponent(ParserUtils.Escape(c, ParserAllowedEscapeChars)));
                 }
 
                 // OR pct-encoded
@@ -112,12 +112,9 @@ namespace Toxon.UrlTemplates
             // varchar = ALPHA / DIGIT / "_" / pct-encoded
             var varchar = Alternative(Bind(ReadWhere(c => ParserUtils.IsAlpha(c) || ParserUtils.IsDigit(c) || c == '_'), x => x.ToString()), ParsePercentEncoded);
             // varname = varchar *( ["."] varchar )
-            var varname = Sequence(varchar, Many(Sequence(Optional(ReadOneOf('.')), varchar, (c1, c2) => c1.Map(c => $"{c}{c2}", () => $"{c2}"))), (c, s) =>
-            {
-                return $"{c}{string.Join("", s)}";
-            });
+            var varname = Sequence(varchar, Many(Sequence(Optional(ReadOneOf('.')), varchar, (c1, c2) => c1.Map(c => $"{c}{c2}", () => $"{c2}"))), (c, s) => $"{c}{string.Join("", s)}");
             // varspec = varname [ modifier-level4 ]
-            var varspec = Sequence(varname, Optional(ParseModifierLevel4), (v, mod) => new ExpressionVariable(v, mod));
+            var varspec = Sequence(varname, Optional(ParseModifierLevel4), (v, mod) => new ExpressionVariable(v, mod.Map(x => new[] { x }, () => new ExpressionVariableModifier[0])));
             // variable-list = varspec *( "," varspec )
             var variableList = Sequence(varspec, Many(Sequence(ReadOneOf(','), varspec, (_, v) => v)), (v, vs) => new[] { v }.Concat(vs));
 
@@ -154,6 +151,8 @@ namespace Toxon.UrlTemplates
 
             return op(initialState).Map(x => ExpressionOperator.GetByChar(Option.Some(x.Result)).Map(y => x.State.Success(y), () => x.State.Failure<ExpressionOperator>("Failed to find an operator for '{0}'", x.Result)));
         }
+
+        private bool ParserAllowedEscapeChars(char c) => ParserUtils.IsReserved(c) || ParserUtils.IsUnreserved(c);
 
         #region state helpers
 

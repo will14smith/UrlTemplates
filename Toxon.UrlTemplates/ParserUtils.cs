@@ -78,9 +78,9 @@ namespace Toxon.UrlTemplates
                    || (c >= 0x100000 && c <= 0x10FFFD);
         }
 
-        public static string Escape(char input)
+        public static string Escape(char input, Func<char, bool> allowedCharPredicate)
         {
-            if (IsReserved(input) || IsUnreserved(input))
+            if (allowedCharPredicate(input))
             {
                 return input.ToString();
             }
@@ -96,13 +96,13 @@ namespace Toxon.UrlTemplates
 
             return result.ToString();
         }
-        public static string Escape(string input)
+        public static string Escape(string input, Func<char, bool> allowedCharPredicate)
         {
             var result = new StringBuilder();
 
             foreach (var c in input)
             {
-                result.Append(Escape(c));
+                result.Append(Escape(c, allowedCharPredicate));
             }
 
             return result.ToString();

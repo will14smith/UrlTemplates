@@ -5,21 +5,56 @@ namespace Toxon.UrlTemplates
     internal class ExpressionOperator
     {
         private static readonly IReadOnlyDictionary<char, ExpressionOperator> Operators;
+        private static readonly IReadOnlyDictionary<ExpressionOperator, ExpressionOperator> NextOperator;
 
         static ExpressionOperator()
         {
             Operators = new Dictionary<char, ExpressionOperator>
             {
-                { '\0', new ExpressionOperator(Option.None<char>(), "", ",", false, "", ExpressionEscapeMode.Unreserved) },
-                { '+', new ExpressionOperator(Option.Some('+'), "", ",", false, "", ExpressionEscapeMode.UnreservedAndReserved) },
-                { '.', new ExpressionOperator(Option.Some('.'), ".", ".", false, "", ExpressionEscapeMode.Unreserved) },
-                { '/', new ExpressionOperator(Option.Some('/'), "/", "/",false , "", ExpressionEscapeMode.Unreserved) },
-                { ';', new ExpressionOperator(Option.Some(';'), ";", ";", true, "", ExpressionEscapeMode.Unreserved) },
-                { '?', new ExpressionOperator(Option.Some('?'), "?", "&", true, "=", ExpressionEscapeMode.Unreserved) },
-                { '&', new ExpressionOperator(Option.Some('&'), "&", "&", true, "=", ExpressionEscapeMode.Unreserved) },
-                { '#', new ExpressionOperator(Option.Some('#'), "#", ",", false, "", ExpressionEscapeMode.UnreservedAndReserved) },
+                {'\0', new ExpressionOperator(Option.None<char>(), "", false, "", ExpressionEscapeMode.Unreserved)},
+                {'+', new ExpressionOperator(Option.Some('+'), "", false, "", ExpressionEscapeMode.UnreservedAndReserved)},
+                {'.', new ExpressionOperator(Option.Some('.'), ".", false, "", ExpressionEscapeMode.Unreserved)},
+                {'/', new ExpressionOperator(Option.Some('/'), "/", false, "", ExpressionEscapeMode.Unreserved)},
+                {';', new ExpressionOperator(Option.Some(';'), ";", true, "", ExpressionEscapeMode.Unreserved)},
+                {'?', new ExpressionOperator(Option.Some('?'), "?", true, "=", ExpressionEscapeMode.Unreserved)},
+                {'&', new ExpressionOperator(Option.Some('&'), "&", true, "=", ExpressionEscapeMode.Unreserved)},
+                {'#', new ExpressionOperator(Option.Some('#'), "#", false, "", ExpressionEscapeMode.UnreservedAndReserved)}
+            };
+
+            var commaUnreserved = new ExpressionOperator(Option.Some(','), ",", false, "", ExpressionEscapeMode.Unreserved);
+            var commaUnreservedReserved = new ExpressionOperator(Option.Some(','), ",", false, "", ExpressionEscapeMode.UnreservedAndReserved);
+
+            NextOperator = new Dictionary<ExpressionOperator, ExpressionOperator>
+            {
+                {Operators['\0'], commaUnreserved},
+                {Operators['+'], commaUnreservedReserved},
+                {Operators['.'], Operators['.']},
+                {Operators['/'], Operators['/']},
+                {Operators[';'], Operators[';']},
+                {Operators['?'], Operators['&']},
+                {Operators['&'], Operators['&']},
+                {Operators['#'], commaUnreservedReserved},
+                {commaUnreserved, commaUnreserved},
+                {commaUnreservedReserved, commaUnreservedReserved}
             };
         }
+
+        private ExpressionOperator(Option<char> op, string prefix, bool named, string ifEmpty,
+            ExpressionEscapeMode escapeMode)
+        {
+            Operator = op;
+            Prefix = prefix;
+            Named = named;
+            IfEmpty = ifEmpty;
+            EscapeMode = escapeMode;
+        }
+
+        public Option<char> Operator { get; }
+
+        public string Prefix { get; }
+        public bool Named { get; }
+        public string IfEmpty { get; }
+        public ExpressionEscapeMode EscapeMode { get; }
 
         public static Option<ExpressionOperator> GetByChar(Option<char> op)
         {
@@ -28,25 +63,10 @@ namespace Toxon.UrlTemplates
                 () => Operators.TryGet('\0'));
         }
 
-        private ExpressionOperator(Option<char> op, string first, string seperator, bool named, string ifEmpty, ExpressionEscapeMode escapeMode)
+        public static ExpressionOperator GetNextOperator(ExpressionOperator op)
         {
-            Operator = op;
-            First = first;
-            Seperator = seperator;
-            Named = named;
-            IfEmpty = ifEmpty;
-            EscapeMode = escapeMode;
+            return NextOperator[op];
         }
-
-        public Option<char> Operator { get; }
-
-        public string First { get; }
-        public string Seperator { get; }
-        public bool Named { get; }
-        public string IfEmpty { get; }
-        public ExpressionEscapeMode EscapeMode { get; }
-
-
 
         public override string ToString()
         {
@@ -57,6 +77,6 @@ namespace Toxon.UrlTemplates
     internal enum ExpressionEscapeMode
     {
         Unreserved,
-        UnreservedAndReserved,
+        UnreservedAndReserved
     }
 }

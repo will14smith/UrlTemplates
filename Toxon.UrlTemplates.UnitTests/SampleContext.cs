@@ -10,7 +10,7 @@ namespace Toxon.UrlTemplates.UnitTests
     {
         public int Level { get; set; }
         public JObject Variables { get; set; }
-        public JArray TestCases { get; set; }
+        public JArray[] TestCases { get; set; }
     }
 
     class SampleData
