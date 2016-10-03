@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Toxon.UrlTemplates
 {
@@ -9,6 +10,10 @@ namespace Toxon.UrlTemplates
 
         public Option(T value) { HasValue = true; Value = value; }
 
+        public Option<TOut> Select<TOut>(Func<T, TOut> fn)
+        {
+            return HasValue ? new Option<TOut>(fn(Value)) : new Option<TOut>();
+        }
         public TOut Map<TOut>(Func<T, TOut> some, Func<TOut> none)
         {
             return HasValue ? some(Value) : none();
@@ -29,6 +34,29 @@ namespace Toxon.UrlTemplates
         public static T OrElse<T>(this Option<T> opt, Func<T> func)
         {
             return opt.Map(x => x, func);
+        }
+
+        public static Option<T> SelectMany<T>(this Option<Option<T>> opt)
+        {
+            return opt.Select(x => x.Value);
+        }
+        public static Option<TOut> SelectMany<TIn, TOut>(this Option<TIn> opt, Func<TIn, Option<TOut>> some)
+        {
+            return opt.Select(some).Select(x => x.Value);
+        }
+    }
+
+    public static class OptionExtensions
+    {
+        public static Option<TValue> TryGet<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
+        {
+            TValue value;
+            if (dict.TryGetValue(key, out value))
+            {
+                return Option.Some(value);
+            }
+
+            return Option.None<TValue>();
         }
     }
 }

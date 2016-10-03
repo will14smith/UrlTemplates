@@ -103,7 +103,7 @@ namespace Toxon.UrlTemplates
                 Optional(ParseOperator),
                 ParseVariableList,
                 ReadOneOf('}'),
-                (unused1, op, vars, unused2) => (UrlTemplateComponent)new ExpressionComponent(op.OrElse(() => new ExpressionOperator()), vars)
+                (unused1, op, vars, unused2) => (UrlTemplateComponent)new ExpressionComponent(op.OrElse(() => ExpressionOperator.GetByChar(Option.None<char>()).Value), vars)
             )(initialState);
         }
 
@@ -152,7 +152,7 @@ namespace Toxon.UrlTemplates
 
             var op = Alternative(op2, op3, opReserve);
 
-            return op(initialState).Map(x => x.State.Success(new ExpressionOperator(x.Result)));
+            return op(initialState).Map(x => ExpressionOperator.GetByChar(Option.Some(x.Result)).Map(y => x.State.Success(y), () => x.State.Failure<ExpressionOperator>("Failed to find an operator for '{0}'", x.Result)));
         }
 
         #region state helpers
