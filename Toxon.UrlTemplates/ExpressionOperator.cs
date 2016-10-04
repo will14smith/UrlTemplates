@@ -70,7 +70,7 @@ namespace Toxon.UrlTemplates
 
         public override string ToString()
         {
-            return Operator.ToString();
+            return Operator.Map(x => x.ToString(), () => "");
         }
     }
 
