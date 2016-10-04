@@ -45,5 +45,12 @@ namespace Toxon.UrlTemplates
 
             return Option.Some(prefix.Length);
         }
+
+        public static bool HasExplode(this ExpressionVariable variable)
+        {
+            return variable.Modifier
+                .OfType<ExpressionVariableModifier.Explode>()
+                .Any();
+        }
     }
 }

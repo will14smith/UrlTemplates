@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Toxon.UrlTemplates.Values
 {
     public interface IDictionaryValue : IValue
     {
-        IValue GetValue(string key);
-        IReadOnlyDictionary<string, IValue> GetValues();
+        IStringValue GetValue(string key);
+        IReadOnlyDictionary<string, IStringValue> GetValues();
     }
 }

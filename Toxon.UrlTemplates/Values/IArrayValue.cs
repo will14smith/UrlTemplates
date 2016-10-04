@@ -4,6 +4,6 @@ namespace Toxon.UrlTemplates.Values
 {
     public interface IArrayValue : IValue
     {
-        IReadOnlyCollection<IValue> GetValues();
+        IReadOnlyCollection<IStringValue> GetValues();
     }
 }
