@@ -7,26 +7,13 @@ using Toxon.UrlTemplates.Values;
 
 namespace Toxon.UrlTemplates.UnitTests
 {
-    public class RfcBySectionTests
+    public class RfcBySectionTests : ReferenceTests
     {
         public void RunSection(string section)
         {
             var data = SampleData.Load(TestContext.CurrentContext.TestDirectory + "/uritemplate-test/spec-examples-by-section.json");
 
-            var test = data.Data[section];
-
-            foreach (var testcase in test.TestCases)
-            {
-                var input = (string)((JValue)testcase.First).Value;
-                var expected = testcase.Last;
-
-                var template = UrlTemplate.Parse(input);
-                var variables = new JsonValueResolver(test.Variables);
-
-                var result = template.ResolveToString(variables, false);
-
-                AssertResult(input, expected, result);
-            }
+            RunContext(data.Data[section]);
         }
 
         [Test]
@@ -47,27 +34,6 @@ namespace Toxon.UrlTemplates.UnitTests
         public void Test3_2_8() { RunSection("3.2.8 Form-Style Query Expansion"); }
         [Test]
         public void Test3_2_9() { RunSection("3.2.9 Form-Style Query Continuation"); }
-
-        private void AssertResult(string template, JToken expected, string result)
-        {
-            List<string> expectedValues;
-
-            if (expected is JValue)
-            {
-                expectedValues = new List<string> { (string)((JValue)expected).Value };
-            }
-            else if (expected is JArray)
-            {
-                expectedValues = expected.Select(value => (string)((JValue)value).Value).ToList();
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-
-            Console.WriteLine("Template: {0}", template);
-            CollectionAssert.Contains(expectedValues, result);
-        }
     }
 
     public class JsonValueResolver : IValueResolver
