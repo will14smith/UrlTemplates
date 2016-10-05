@@ -57,6 +57,7 @@
     <Compile Include="UrlTemplate.cs" />
     <Compile Include="UrlTemplateComponent.cs" />
     <Compile Include="Executor.cs" />
+    <Compile Include="UrlTemplateOptimiser.cs" />
     <Compile Include="Values\ConstantArrayValue.cs" />
     <Compile Include="Values\ConstantDictionaryValue.cs" />
     <Compile Include="Values\ConstantStringValue.cs" />

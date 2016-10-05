@@ -8,11 +8,11 @@ namespace Toxon.UrlTemplates
 {
     internal class Executor
     {
-        private readonly IReadOnlyList<UrlTemplateComponent> _components;
+        private readonly IReadOnlyCollection<UrlTemplateComponent> _components;
         private readonly bool _allowPartial;
         private readonly IValueResolver _valueResolver;
 
-        public Executor(IReadOnlyList<UrlTemplateComponent> components, bool allowPartial, IValueResolver valueResolver)
+        public Executor(IReadOnlyCollection<UrlTemplateComponent> components, bool allowPartial, IValueResolver valueResolver)
         {
             _components = components;
             _allowPartial = allowPartial;
@@ -35,8 +35,9 @@ namespace Toxon.UrlTemplates
                 }
             }
 
-            return new UrlTemplate(result);
+            var optimisedResult = new UrlTemplateOptimiser(result);
 
+            return new UrlTemplate(optimisedResult.Optimise());
         }
 
         private IReadOnlyList<UrlTemplateComponent> ExpandExpression(ExpressionComponent expression)
@@ -50,7 +51,7 @@ namespace Toxon.UrlTemplates
                 {
                     if (_allowPartial)
                     {
-                        throw new NotImplementedException();
+                        state = state.AddComponent(new ExpressionComponent(state.Operator, new[] { variable }));
                     }
                     else
                     {

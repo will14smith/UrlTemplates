@@ -6,9 +6,9 @@ namespace Toxon.UrlTemplates
 {
     public class UrlTemplate
     {
-        private readonly IReadOnlyList<UrlTemplateComponent> _components;
+        private readonly IReadOnlyCollection<UrlTemplateComponent> _components;
 
-        internal UrlTemplate(IReadOnlyList<UrlTemplateComponent> components)
+        internal UrlTemplate(IReadOnlyCollection<UrlTemplateComponent> components)
         {
             _components = components;
         }

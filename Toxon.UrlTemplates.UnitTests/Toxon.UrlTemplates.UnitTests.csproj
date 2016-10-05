@@ -48,6 +48,7 @@
     <Compile Include="ParserTests.Level2Expressions.cs" />
     <Compile Include="ParserTests.Level1Expressions.cs" />
     <Compile Include="ParserTests.Literals.cs" />
+    <Compile Include="PartialExpansionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceTests.cs" />
     <Compile Include="RfcBySectionTests.cs" />
