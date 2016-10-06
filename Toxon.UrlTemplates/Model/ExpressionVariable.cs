@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Model
 {
     internal class ExpressionVariable
     {

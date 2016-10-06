@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Toxon.UrlTemplates.Parsing;
 
 namespace Toxon.UrlTemplates.UnitTests
 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Toxon.UrlTemplates.Utils;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Model
 {
     internal class ExpressionOperator
     {
@@ -72,11 +73,5 @@ namespace Toxon.UrlTemplates
         {
             return Operator.Map(x => x.ToString(), () => "");
         }
-    }
-
-    internal enum ExpressionEscapeMode
-    {
-        Unreserved,
-        UnreservedAndReserved
     }
 }

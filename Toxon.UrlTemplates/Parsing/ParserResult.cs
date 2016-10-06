@@ -2,20 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Parsing
 {
-    public static class ParserResult
-    {
-        internal static ParserResult<T> Success<T>(ParserState state, T result)
-        {
-            return new ParserResult<T>.Success(state, result);
-        }
-        internal static ParserResult<T> Failure<T>(ParserState state, IEnumerable<ParserError> errors)
-        {
-            return new ParserResult<T>.Failure(state, errors);
-        }
-    }
-
     public abstract class ParserResult<TResult>
     {
         private ParserResult(ParserState state)

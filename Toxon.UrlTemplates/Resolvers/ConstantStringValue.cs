@@ -1,6 +1,8 @@
-﻿namespace Toxon.UrlTemplates.Values
+﻿using Toxon.UrlTemplates.Values;
+
+namespace Toxon.UrlTemplates.Resolvers
 {
-    class ConstantStringValue : IStringValue
+    public class ConstantStringValue : IStringValue
     {
         public ConstantStringValue(string value)
         {

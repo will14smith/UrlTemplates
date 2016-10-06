@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Toxon.UrlTemplates.Model;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Execution
 {
     internal class ExecutorState
     {

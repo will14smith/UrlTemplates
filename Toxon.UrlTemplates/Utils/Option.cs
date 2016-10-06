@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Utils
 {
     public struct Option<T>
     {

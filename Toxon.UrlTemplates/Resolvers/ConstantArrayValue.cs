@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Toxon.UrlTemplates.Values;
 
-namespace Toxon.UrlTemplates.Values
+namespace Toxon.UrlTemplates.Resolvers
 {
     public class ConstantArrayValue : IArrayValue
     {

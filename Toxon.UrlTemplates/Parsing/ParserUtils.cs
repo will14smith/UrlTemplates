@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Parsing
 {
     internal class ParserUtils
     {

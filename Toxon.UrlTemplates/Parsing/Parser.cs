@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Toxon.UrlTemplates.Model;
+using Toxon.UrlTemplates.Utils;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Parsing
 {
     internal class Parser
     {
@@ -42,10 +44,10 @@ namespace Toxon.UrlTemplates
 
             if (errors.Any())
             {
-                return ParserResult.Failure<UrlTemplate>(state, errors);
+                return state.Failure<UrlTemplate>(errors);
             }
 
-            return ParserResult.Success(state, new UrlTemplate(components));
+            return state.Success(new UrlTemplate(components));
         }
 
         private ParserResult<UrlTemplateComponent> ParseLiteralOrExpression(ParserState s)

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Model
 {
     internal class ExpressionComponent : UrlTemplateComponent
     {

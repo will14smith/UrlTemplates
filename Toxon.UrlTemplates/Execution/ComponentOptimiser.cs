@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Toxon.UrlTemplates.Model;
+using Toxon.UrlTemplates.Utils;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Execution
 {
-    internal class UrlTemplateOptimiser
+    internal class ComponentOptimiser
     {
         private readonly IReadOnlyCollection<UrlTemplateComponent> _input;
 
@@ -12,7 +14,7 @@ namespace Toxon.UrlTemplates
         private ExpressionOperator _nextOperator;
         private List<ExpressionVariable> _variableBuffer = new List<ExpressionVariable>();
 
-        public UrlTemplateOptimiser(IReadOnlyCollection<UrlTemplateComponent> input)
+        public ComponentOptimiser(IReadOnlyCollection<UrlTemplateComponent> input)
         {
             _input = input;
         }

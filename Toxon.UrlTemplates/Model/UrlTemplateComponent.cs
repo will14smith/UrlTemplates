@@ -1,4 +1,4 @@
-﻿namespace Toxon.UrlTemplates
+﻿namespace Toxon.UrlTemplates.Model
 {
     internal abstract class UrlTemplateComponent
     {
