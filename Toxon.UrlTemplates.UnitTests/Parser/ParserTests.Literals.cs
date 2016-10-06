@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Toxon.UrlTemplates.UnitTests
+namespace Toxon.UrlTemplates.UnitTests.Parser
 {
     public partial class ParserTests
     {

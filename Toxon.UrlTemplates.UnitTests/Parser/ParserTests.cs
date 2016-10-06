@@ -4,7 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using Toxon.UrlTemplates.Parsing;
 
-namespace Toxon.UrlTemplates.UnitTests
+namespace Toxon.UrlTemplates.UnitTests.Parser
 {
     public partial class ParserTests
     {
@@ -26,7 +26,7 @@ namespace Toxon.UrlTemplates.UnitTests
 
         private ParserResult<UrlTemplate> Parse(string input)
         {
-            return new Parser(input).Parse();
+            return new Parsing.Parser(input).Parse();
         }
 
         private void AssertOnSuccess(ParserResult<UrlTemplate> result, Action<UrlTemplate> action)

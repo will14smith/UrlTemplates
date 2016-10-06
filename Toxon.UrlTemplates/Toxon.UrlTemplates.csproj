@@ -46,9 +46,10 @@
     <Compile Include="Model\ExpressionOperator.cs" />
     <Compile Include="Model\ExpressionVariable.cs" />
     <Compile Include="Model\ExpressionVariableModifier.cs" />
-    <Compile Include="IValueResolver.cs" />
+    <Compile Include="Resolvers\IValueResolver.cs" />
     <Compile Include="Model\LiteralComponent.cs" />
     <Compile Include="Model\ExpressionVariableModifierExtensions.cs" />
+    <Compile Include="Resolvers\ConstantValueResolver.cs" />
     <Compile Include="Utils\Option.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\ParserError.cs" />
@@ -62,9 +63,9 @@
     <Compile Include="Model\UrlTemplateComponent.cs" />
     <Compile Include="Execution\Executor.cs" />
     <Compile Include="Execution\ComponentOptimiser.cs" />
-    <Compile Include="Values\ConstantArrayValue.cs" />
-    <Compile Include="Values\ConstantDictionaryValue.cs" />
-    <Compile Include="Values\ConstantStringValue.cs" />
+    <Compile Include="Resolvers\ConstantArrayValue.cs" />
+    <Compile Include="Resolvers\ConstantDictionaryValue.cs" />
+    <Compile Include="Resolvers\ConstantStringValue.cs" />
     <Compile Include="Values\IArrayValue.cs" />
     <Compile Include="Values\IDictionaryValue.cs" />
     <Compile Include="Values\IStringValue.cs" />

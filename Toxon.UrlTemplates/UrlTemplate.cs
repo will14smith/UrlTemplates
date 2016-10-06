@@ -4,6 +4,7 @@ using System.Linq;
 using Toxon.UrlTemplates.Execution;
 using Toxon.UrlTemplates.Model;
 using Toxon.UrlTemplates.Parsing;
+using Toxon.UrlTemplates.Resolvers;
 
 namespace Toxon.UrlTemplates
 {

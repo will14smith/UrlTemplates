@@ -1,6 +1,6 @@
 using Toxon.UrlTemplates.Values;
 
-namespace Toxon.UrlTemplates
+namespace Toxon.UrlTemplates.Resolvers
 {
     public interface IValueResolver
     {

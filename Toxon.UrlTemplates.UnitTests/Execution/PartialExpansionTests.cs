@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace Toxon.UrlTemplates.UnitTests
+namespace Toxon.UrlTemplates.UnitTests.Execution
 {
     public class PartialExpansionTests
     {

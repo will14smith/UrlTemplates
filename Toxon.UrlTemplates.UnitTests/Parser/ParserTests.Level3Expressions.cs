@@ -1,14 +1,13 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace Toxon.UrlTemplates.UnitTests
+namespace Toxon.UrlTemplates.UnitTests.Parser
 {
     public partial class ParserTests
     {
         [Test]
-        public void Level1Variable()
+        public void Level3Variable()
         {
-            var input = "{foo123_%20}";
+            var input = "{.foo123_%20}";
             var result = Parse(input);
 
             AssertOnSuccess(result, x =>
@@ -19,9 +18,9 @@ namespace Toxon.UrlTemplates.UnitTests
             });
         }
         [Test]
-        public void Level1LiteralVariableLiteral()
+        public void Level3MultiVariable()
         {
-            var input = "hello{foo}world";
+            var input = "{.foo123_%20,bar456_%21}";
             var result = Parse(input);
 
             AssertOnSuccess(result, x =>
