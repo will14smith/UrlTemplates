@@ -5,3 +5,17 @@
 https://tools.ietf.org/html/rfc6570 for C#
 
 Aiming for to comply with level 4 and support partial expansion
+
+## Installation
+
+For nuget users:
+
+```
+Install-Package Toxon.UrlTemplates
+```
+
+For paket users:
+
+```
+paket add nuget Toxon.UrlTemplates project <project>
+```
