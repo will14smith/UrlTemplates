@@ -52,6 +52,7 @@
     <Compile Include="Execution\PartialExpansionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceTests.cs" />
+    <Compile Include="Resolvers\RelfectionValueResolverTests.cs" />
     <Compile Include="RfcBySectionTests.cs" />
     <Compile Include="SampleContext.cs" />
   </ItemGroup>

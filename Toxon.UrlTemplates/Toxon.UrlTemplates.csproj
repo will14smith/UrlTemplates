@@ -50,6 +50,8 @@
     <Compile Include="Model\LiteralComponent.cs" />
     <Compile Include="Model\ExpressionVariableModifierExtensions.cs" />
     <Compile Include="Resolvers\ConstantValueResolver.cs" />
+    <Compile Include="Resolvers\ReflectionMappings.cs" />
+    <Compile Include="Resolvers\ReflectionValueResolver.cs" />
     <Compile Include="Utils\Option.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\ParserError.cs" />
