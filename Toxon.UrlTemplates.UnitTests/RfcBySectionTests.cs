@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using Toxon.UrlTemplates.Resolvers;
 using Toxon.UrlTemplates.Values;
 
 namespace Toxon.UrlTemplates.UnitTests
